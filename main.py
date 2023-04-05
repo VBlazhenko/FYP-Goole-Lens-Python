@@ -546,5 +546,4 @@ def button_window(argument, url='http://www.google.com/', timeout=5):
 # ================== RESULTS #######################
 
 web_site_online()
-#button_window(extra)
 capture.release()
