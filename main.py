@@ -204,10 +204,6 @@ while True:
         # IF WANT TO SEE COLOR DETECTED ON SCREEN - UNCOMMENT BELOW
         # cv2.rectangle(frame, (20, 20), (800, 60), (b, g, r), -1)
         text = getColorName(b, g, r)
-        # cv2.putText(frame, text, (50, 50), 2, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
-        #
-        # if (r + g + b >= 600):
-        #     cv2.putText(frame, text, (50, 50), 2, 0.8, (0, 0, 0), 2, cv2.LINE_AA)
 
         label = class_list[classid]
 
@@ -216,10 +212,6 @@ while True:
         fps = 1000000000 * frame_count / (end - start)
         frame_count = 0
         start = time.time_ns()
-
-    # if fps > 0:
-    #     fps_label = "FPS: %.2f" % fps
-    #     cv2.putText(frame, fps_label, (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
     with open("data.txt", "a") as f:
         f.write("\n")
@@ -270,9 +262,9 @@ while True:
                 d[k] = max(d.get(k, val), val)
 
         out = max(d, key=d.get)
-        result = [k for k, v in d.items() if v >= 50]
+        result = [k for k, v in d.items() if v >= 65]
 
-        print("Objects with a percentage higher than 55%: ", result)
+        print("Objects with a percentage higher than 65%: ", result)
         if len(result) == 0:
             na_objects()
             exit()
@@ -335,26 +327,12 @@ def window():
     button2 = ttk.Button(win, text="Text", command=lambda x="Text": which_button(x))
     button2.pack(side=TOP)
 
-    #quit(window())
     win.mainloop()
 
-
-#def close():
-#   win = Tk()
-#   win.quit()
 
 
 def take_logo():
     global extra
-    # #close()
-    # while True:
-    #     _, frame = capture.read()
-    #     cv2.imshow("Online Text Detection", frame)
-    #     if cv2.waitKey(1) & 0xFF == ord("q"):
-    #         cv2.imwrite("processing_picture.jpg", frame)
-    #         break
-    # capture.release()
-    # cv2.destroyAllWindows()
 
     # Instantiates a client
     client = vision.ImageAnnotatorClient()
@@ -374,48 +352,9 @@ def take_logo():
     button_window(extra)
     return extra
 
-#
-# def take_text():
-#     global extra
-#     close()
-#     while True:
-#         _, frame = capture.read()
-#         cv2.imshow("Online Logo Detection", frame)
-#         if cv2.waitKey(1) & 0xFF == ord("q"):
-#             cv2.imwrite("processing_picture.jpg", frame)
-#             break
-#     capture.release()
-#     cv2.destroyAllWindows()
-#
-#     # Instantiates a client
-#     client = vision.ImageAnnotatorClient()
-#
-#     # Loads the image into memory
-#     with io.open("processing_picture.jpg", 'rb') as image_file:
-#         content = image_file.read()
-#
-#     image = types.Image(content=content)
-#
-#     # Performs label detection on the image file
-#     response = client.text_detection(image=image)
-#     labels = response.text_annotations
-#     for label in labels:
-#         extra = label.description
-#     return extra
 
 def text_detection_offline():
     global extra
-   #close()
-    # while True:
-    #     _, image = capture.read()
-    #     cv2.imshow("Text detection/ OFFLINE", image)
-    #     if cv2.waitKey(1) & 0xFF == ord("q"):
-    #         cv2.imwrite("nointernet_picture.jpg", image)
-    #         break
-    #
-    # capture.release()
-    # cv2.destroyAllWindows()
-
     reader = easyocr.Reader(['ch_sim','en'], gpu=False)
     result = reader.readtext('captured_data_detection.jpg', detail = 0)
     extra = ' '.join(result)
@@ -435,7 +374,6 @@ def web_site_online(url='http://www.google.com/', timeout=5):
         e.response.status_code))
     except requests.ConnectionError:
         text_detection_offline()
-
 
 #============END TEXT/LOGO DETECTION + OFFLINE MODE============
 
@@ -546,4 +484,5 @@ def button_window(argument, url='http://www.google.com/', timeout=5):
 # ================== RESULTS #######################
 
 web_site_online()
+#button_window(extra)
 capture.release()
